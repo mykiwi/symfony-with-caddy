@@ -1,0 +1,5 @@
+0.0.0.0:80 {
+    root * /srv/public/
+    php_fastcgi 127.0.0.1:9000
+    file_server
+}

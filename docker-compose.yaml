@@ -1,0 +1,33 @@
+version: '3.7'
+
+volumes:
+    postgres-data:
+
+services:
+    db:
+        image: postgres:12-alpine
+        environment:
+            - POSTGRES_USER=root
+            - POSTGRES_PASSWORD=root
+        volumes:
+            - postgres-data:/var/lib/postgresql/data
+        ports:
+            - '5432:5432'
+
+    web:
+        build:
+            context: .docker/php
+        volumes:
+            - ./:/srv
+            - .docker/php/fs/etc/caddy:/etc/caddy
+        working_dir: /srv
+        ports:
+            - '80:80'
+        environment:
+            - BLACKFIRE_SERVER_ID
+            - BLACKFIRE_SERVER_TOKEN
+
+    adminer:
+        image: adminer
+        ports:
+            - '54321:8080'
